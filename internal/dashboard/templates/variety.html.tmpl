@@ -1,0 +1,19 @@
+{{define "content"}}
+<section>
+  <h2>Recipe rotation</h2>
+  <p class="empty">Never-cooked and long-unused recipes surface first - good candidates for the next plan.</p>
+  {{if .Entries}}
+  <table>
+    <tr><th>Recipe</th><th>Rating</th><th>Times cooked</th><th>Last cooked</th></tr>
+    {{range .Entries}}
+    <tr>
+      <td>{{.Title}}</td>
+      <td>{{if .Rating}}{{.Rating}}/5{{else}}-{{end}}</td>
+      <td>{{.TimesCooked}}</td>
+      <td>{{if .DaysSinceCooked}}{{.DaysSinceCooked}}d ago{{else}}never{{end}}</td>
+    </tr>
+    {{end}}
+  </table>
+  {{else}}<p class="empty">No recipes synced yet.</p>{{end}}
+</section>
+{{end}}

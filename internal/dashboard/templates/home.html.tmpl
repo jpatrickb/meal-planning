@@ -1,0 +1,95 @@
+{{define "content"}}
+<section class="panel panel-today">
+  <div class="panel-head">
+    <h2>{{.Today.Weekday}}</h2>
+    <span class="panel-note">{{.Today.DateLabel}}</span>
+  </div>
+
+  {{if .Today.People}}
+  <div class="today-totals">
+    {{range .Today.People}}
+    <div class="person-total">
+      <div class="person-name">{{.Person}}</div>
+      <div class="person-cal">{{printf "%.0f" .Calories}}<span class="unit">cal</span></div>
+      <div class="person-sub">{{printf "%.0f" .Protein}}g protein &middot; {{printf "%.0f" .Carbs}}g carbs &middot; {{printf "%.0f" .Fat}}g fat</div>
+      <div class="person-sub">{{.Meals}} meal(s) logged</div>
+    </div>
+    {{end}}
+  </div>
+  {{else}}<p class="empty">Nothing logged yet today.</p>{{end}}
+
+  {{if .Today.Slots}}
+  <ul class="today-slots">
+    {{range .Today.Slots}}
+    <li class="today-slot">
+      <span class="slot-tag">{{.Slot}}</span>
+      <div class="slot-body">
+        {{if .IsPlan}}
+        <span class="slot-planned">{{.Planned}}</span><span class="badge badge-status">planned</span>
+        {{else}}
+        {{range .Entries}}
+        <div class="slot-entry">
+          <span class="entry-person">{{.Person}}</span>
+          <span class="entry-food">{{.Food}}</span>
+          {{if .HasMacros}}<span class="entry-macros">{{printf "%.0f" .Calories}} cal &middot; {{printf "%.0f" .Protein}}g</span>{{end}}
+        </div>
+        {{end}}
+        {{end}}
+      </div>
+    </li>
+    {{end}}
+  </ul>
+  {{end}}
+</section>
+
+<section class="panel{{if .Alerts}} panel-attention{{end}}">
+  <h2>Needs attention</h2>
+  {{if .Alerts}}
+  <ul class="alert-list">
+    {{range .Alerts}}
+    <li class="alert alert-{{.Urgency}}"><span class="alert-dot" aria-hidden="true"></span>{{.Text}}</li>
+    {{end}}
+  </ul>
+  {{else}}<p class="empty">Nothing needs attention. Nothing expiring, no aging leftovers, shopping list clear.</p>{{end}}
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Last 7 days</h2>
+    <span class="panel-note"><a href="macros.html">every meal &rarr;</a></span>
+  </div>
+  {{if .Macros.ByPerson}}
+  <div class="week-macros">
+    {{range .Macros.ByPerson}}
+    <div class="week-person">
+      <div class="person-name">{{.Person}}</div>
+      <div class="week-figures">
+        <div><span class="fig">{{printf "%.0f" .AvgCalories}}</span><span class="fig-label">cal/day</span></div>
+        <div><span class="fig">{{printf "%.0f" .AvgProtein}}</span><span class="fig-label">g protein</span></div>
+        <div><span class="fig">{{printf "%.0f" .AvgCarbs}}</span><span class="fig-label">g carbs</span></div>
+        <div><span class="fig">{{printf "%.0f" .AvgFat}}</span><span class="fig-label">g fat</span></div>
+      </div>
+      <div class="person-sub">{{.DaysLogged}} day(s) logged</div>
+    </div>
+    {{end}}
+  </div>
+  {{else}}<p class="empty">Nothing logged in the last 7 days.</p>{{end}}
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Leftovers</h2>
+    <span class="panel-note"><a href="plan.html">the plan &rarr;</a></span>
+  </div>
+  {{if .OpenLeftovers}}
+  <ul class="pill-list">
+    {{range .OpenLeftovers}}
+    <li class="pill{{if ge .DaysSinceCook 3}} pill-soon{{end}}">
+      <span class="pill-name">{{.RecipeEmoji}} {{.RecipeTitle}}</span>
+      <span class="pill-detail">{{printf "%.0f" .ServingsRemaining}} of {{printf "%.0f" .ServingsYielded}} left &middot; day {{.DaysSinceCook}}</span>
+    </li>
+    {{end}}
+  </ul>
+  {{else}}<p class="empty">No open leftovers.</p>{{end}}
+</section>
+{{end}}

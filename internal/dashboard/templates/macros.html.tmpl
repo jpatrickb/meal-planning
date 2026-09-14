@@ -1,0 +1,39 @@
+{{define "content"}}
+<section>
+  <h2>Average daily macros, last 7 days</h2>
+  {{if .PersonMeters}}
+  {{range .PersonMeters}}
+  <h3>{{.Person}} &middot; {{.DaysLogged}} day(s) logged</h3>
+  <div class="meter-grid">{{.MetersHTML}}</div>
+  {{end}}
+  {{else}}<p class="empty">No consumption logged in the last 7 days.</p>{{end}}
+</section>
+
+<section>
+  <h2>Every meal, last 7 days</h2>
+  {{if .RecentMeals}}
+  <div class="table-scroll">
+  <table>
+    <tr><th>Day</th><th>Who</th><th>Meal</th><th>Food</th><th class="num">Cal</th><th class="num">Protein</th><th class="num">Carbs</th><th class="num">Fat</th><th class="num">Fiber</th></tr>
+    {{range .RecentMeals}}
+    <tr>
+      <td>{{.DayLabel}}</td>
+      <td>{{.Person}}</td>
+      <td>{{.MealSlot}}</td>
+      <td>{{.Food}}</td>
+      {{if .HasMacros}}
+      <td class="num">{{printf "%.0f" .Calories}}</td>
+      <td class="num">{{printf "%.0f" .Protein}}g</td>
+      <td class="num">{{printf "%.0f" .Carbs}}g</td>
+      <td class="num">{{printf "%.0f" .Fat}}g</td>
+      <td class="num">{{printf "%.0f" .Fiber}}g</td>
+      {{else}}
+      <td class="num" colspan="5">not recorded</td>
+      {{end}}
+    </tr>
+    {{end}}
+  </table>
+  </div>
+  {{else}}<p class="empty">No meals logged in the last 7 days.</p>{{end}}
+</section>
+{{end}}

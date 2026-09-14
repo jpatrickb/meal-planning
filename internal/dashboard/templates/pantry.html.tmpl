@@ -1,0 +1,81 @@
+{{define "content"}}
+{{if .UseFirst}}
+<section class="panel panel-attention">
+  <h2>Use these first</h2>
+  <ul class="pill-list">
+    {{range .UseFirst}}
+    <li class="pill pill-{{.Urgency}}">
+      <span class="pill-name">{{.Name}}</span>
+      <span class="pill-detail">{{printf "%.2f" .Quantity}} {{.Unit}} &middot;
+        {{if eq .Urgency "expired"}}past its date{{else if eq .DaysLeft 0}}today{{else}}{{.DaysLeft}}d{{end}}</span>
+    </li>
+    {{end}}
+  </ul>
+</section>
+{{end}}
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>On hand</h2>
+    <span class="panel-note">{{.TotalItems}} items</span>
+  </div>
+  <input type="search" id="pantry-filter" class="filter-box" placeholder="Filter by name or category…" aria-label="Filter pantry items">
+  <p class="empty" id="pantry-no-match" hidden>Nothing matches that.</p>
+
+  {{range .Groups}}
+  <details class="cat-group" open data-category="{{.Label}}">
+    <summary><span class="cat-name">{{.Label}}</span><span class="cat-count">{{.Count}}</span></summary>
+    <ul class="item-list">
+      {{range .Items}}
+      <li class="item-row" data-name="{{.Name}}">
+        <span class="item-name">{{.Name}}</span>
+        <span class="item-qty">{{printf "%.2f" .Quantity}} {{.Unit}}</span>
+        {{if .HasExpiry}}
+          {{if eq .Urgency "expired"}}<span class="badge badge-critical">expired</span>
+          {{else if eq .Urgency "soon"}}<span class="badge badge-warning">{{.DaysLeft}}d</span>
+          {{else}}<span class="item-expiry">{{.ExpiresDate}}</span>{{end}}
+        {{end}}
+      </li>
+      {{end}}
+    </ul>
+  </details>
+  {{end}}
+</section>
+
+<script>
+// Filtering only: the dashboard is read-only, so nothing here changes data.
+// Plain DOM work, no dependencies - the page has to work offline in a store.
+(function () {
+  var box = document.getElementById('pantry-filter');
+  var groups = Array.prototype.slice.call(document.querySelectorAll('.cat-group'));
+  var noMatch = document.getElementById('pantry-no-match');
+  if (!box) return;
+
+  box.addEventListener('input', function () {
+    var q = box.value.trim().toLowerCase();
+    var anyVisible = false;
+
+    groups.forEach(function (group) {
+      var category = (group.dataset.category || '').toLowerCase();
+      var rows = Array.prototype.slice.call(group.querySelectorAll('.item-row'));
+      var shown = 0;
+
+      rows.forEach(function (row) {
+        var name = (row.dataset.name || '').toLowerCase();
+        var hit = q === '' || name.indexOf(q) !== -1 || category.indexOf(q) !== -1;
+        row.hidden = !hit;
+        if (hit) shown++;
+      });
+
+      group.hidden = shown === 0;
+      if (shown > 0) anyVisible = true;
+      // Collapsing while filtering would hide the very matches being
+      // looked for, so open any group that still has one.
+      if (q !== '' && shown > 0) group.open = true;
+    });
+
+    noMatch.hidden = anyVisible;
+  });
+})();
+</script>
+{{end}}

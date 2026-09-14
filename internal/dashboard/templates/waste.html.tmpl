@@ -1,0 +1,13 @@
+{{define "content"}}
+<section>
+  <h2>Waste by reason, last 30 days</h2>
+  {{.Chart}}
+  <table>
+    <tr><th>Reason</th><th>Occurrences</th><th>Cost</th></tr>
+    {{range .Analytics.ByReason}}
+    <tr><td>{{.Reason}}</td><td>{{.Occurrences}}</td><td>${{printf "%.2f" .TotalCost}}</td></tr>
+    {{end}}
+    <tr><td><strong>Total</strong></td><td></td><td><strong>${{printf "%.2f" .Analytics.TotalCost}}</strong></td></tr>
+  </table>
+</section>
+{{end}}

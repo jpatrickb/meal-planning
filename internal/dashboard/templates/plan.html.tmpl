@@ -1,0 +1,42 @@
+{{define "content"}}
+<section>
+  <div class="stat-row">
+    <div class="stat-tile"><div class="label">Days shown</div><div class="value">{{len .Days}}</div></div>
+    <div class="stat-tile"><div class="label">Meals planned</div><div class="value">{{.TotalMeals}}</div></div>
+    <div class="stat-tile"><div class="label">From a recipe</div><div class="value">{{.RecipeMeals}}</div></div>
+  </div>
+  {{if .RangeLabel}}<p class="range-note">{{.RangeLabel}}. Recipe names link to the full instructions on the recipe site.</p>{{end}}
+</section>
+
+{{if .Days}}
+{{range .Days}}
+<section class="day-card{{if .IsToday}} day-today{{end}}">
+  <div class="day-head">
+    <h2>{{.Weekday}}<span class="day-date">{{.DateLabel}}</span></h2>
+    {{if .Relative}}<span class="badge badge-today">{{.Relative}}</span>{{end}}
+  </div>
+  {{if .Empty}}
+  <p class="empty">Nothing planned.</p>
+  {{else}}
+  <ul class="slot-list">
+    {{range .Meals}}
+    <li class="slot-row">
+      <span class="slot-name">{{.Slot}}</span>
+      <span class="slot-meal">
+        <span class="slot-emoji" aria-hidden="true">{{.Emoji}}</span>
+        {{if .RecipeURL}}<a href="{{.RecipeURL}}" rel="noopener">{{.Title}}</a>{{else}}{{.Title}}{{end}}
+        {{if .IsLeftovers}}<span class="badge badge-leftovers">leftovers</span>{{end}}
+        {{if ne .PlannedFor "both"}}<span class="badge badge-person">{{.PlannedFor}} only</span>{{end}}
+        {{if ne .Status "planned"}}<span class="badge badge-status">{{.Status}}</span>{{end}}
+        {{if .Macros}}<span class="slot-macros">{{.Macros}}</span>{{end}}
+      </span>
+    </li>
+    {{end}}
+  </ul>
+  {{end}}
+</section>
+{{end}}
+{{else}}
+<section><p class="empty">Nothing planned yet.</p></section>
+{{end}}
+{{end}}

@@ -1,0 +1,34 @@
+{{define "content"}}
+<section>
+  <div class="stat-row">
+    <div class="stat-tile"><div class="label">Still to buy</div><div class="value">{{.OpenCount}}</div></div>
+    <div class="stat-tile"><div class="label">Already bought</div><div class="value">{{.DoneCount}}</div></div>
+    <div class="stat-tile"><div class="label">Total lines</div><div class="value">{{.TotalCount}}</div></div>
+  </div>
+  <p class="range-note">Grouped by store section. This is a read-only view, so check items off with <code>meal shopping-list check &lt;id&gt;</code>.</p>
+</section>
+
+{{if .Sections}}
+{{range .Sections}}
+<section>
+  <div class="day-head">
+    <h2>{{.Name}}</h2>
+    <span class="badge badge-count">{{.OpenCount}} of {{.TotalCount}} left</span>
+  </div>
+  <ul class="shop-list">
+    {{range .Items}}
+    <li class="shop-row{{if .Checked}} shop-done{{end}}">
+      <span class="shop-mark" aria-hidden="true">{{if .Checked}}&#10003;{{else}}&#9634;{{end}}</span>
+      <span class="shop-text">
+        {{.Description}}
+        {{if .SourceLabel}}<span class="shop-source">{{.SourceLabel}}</span>{{end}}
+      </span>
+    </li>
+    {{end}}
+  </ul>
+</section>
+{{end}}
+{{else}}
+<section><p class="empty">Shopping list is empty.</p></section>
+{{end}}
+{{end}}

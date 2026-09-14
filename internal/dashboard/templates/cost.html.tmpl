@@ -1,0 +1,17 @@
+{{define "content"}}
+<section>
+  <h2>Weekly cost, last 8 weeks</h2>
+  {{.Chart}}
+</section>
+
+<section>
+  <h2>Spend, last 30 days</h2>
+  <table>
+    <tr><th>Person</th><th>Cost</th></tr>
+    {{range .Analytics.ByPerson}}
+    <tr><td>{{.Person}}</td><td>${{printf "%.2f" .Cost}}</td></tr>
+    {{end}}
+    <tr><td><strong>Household total</strong></td><td><strong>${{printf "%.2f" .Analytics.Household}}</strong></td></tr>
+  </table>
+</section>
+{{end}}
