@@ -282,9 +282,8 @@ func DecrementPantryStockFIFODetailed(tx *sql.Tx, itemID int64, unit string, qty
 // but never errors for insufficient stock -- it consumes whatever is on hand
 // in this unit (which may be less than qty, or zero). Used when a mapped
 // ingredient has less on-hand stock than a recipe needs and the caller has
-// explicitly decided to proceed anyway
-// (docs/requirements-ingredient-costing.md §2: this is a per-item, per-cook
-// decision, never a silent default).
+// explicitly decided to proceed anyway (a per-item, per-cook decision, never
+// a silent default).
 func DecrementPantryStockFIFOPartial(tx *sql.Tx, itemID int64, unit string, qty float64, resultStatus string, convert UnitConverter) ([]ConsumedLot, error) {
 	return decrementLotsFIFO(tx, itemID, unit, qty, resultStatus, true, convert)
 }
@@ -293,8 +292,7 @@ func DecrementPantryStockFIFOPartial(tx *sql.Tx, itemID int64, unit string, qty 
 // than the one asked for, so an insufficient-stock error can tell the
 // difference between "genuinely nothing on hand" and "stock exists, but in
 // a unit no recorded conversion can reach from this one" -- a real, expected case
-// per docs/requirements-ingredient-costing.md §11 (a recipe's unit and a
-// purchase's unit legitimately differ; e.g. onions purchased by weight but
+// (a recipe's unit and a purchase's unit legitimately differ; e.g. onions purchased by weight but
 // referenced by count in a recipe).
 func OtherUnitStock(db *sql.DB, itemID int64, excludeUnit string) ([]PantryOnHand, error) {
 	rows, err := db.Query(`

@@ -4,7 +4,7 @@ import "database/sql"
 
 // RecipeIngredient is one raw ingredient line's mapping to a pantry item, or
 // an explicit not_tracked disposition (e.g. "salt to taste" isn't worth
-// pantry-tracking). See docs/requirements-ingredient-costing.md §6.
+// pantry-tracking).
 type RecipeIngredient struct {
 	ID                int64
 	RecipeID          string

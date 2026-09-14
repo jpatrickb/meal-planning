@@ -6,7 +6,6 @@ import "database/sql"
 // universal (ItemID nil, e.g. cup -> ml) or specific to one pantry item
 // (density/size-dependent, e.g. a cup of flour vs. a cup of milk, or one
 // carrot's average weight). quantity(to_unit) = quantity(from_unit) * factor.
-// See docs/requirements-ingredient-costing.md §6.
 type UnitConversion struct {
 	ID          int64
 	ItemID      *int64

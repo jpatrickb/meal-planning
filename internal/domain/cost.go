@@ -57,8 +57,7 @@ func ComputeRecipeCost(db *sql.DB, recipeID string) (RecipeCostResult, error) {
 }
 
 // CostResolution is the outcome of deciding what cost to show/charge for a
-// recipe, per the three-state model in
-// docs/requirements-ingredient-costing.md §4: a manual recipe_meta value
+// recipe: a manual recipe_meta value
 // always wins when present (whether the recipe isn't mapped yet, or someone
 // deliberately kept an override after completion); "computed" only applies
 // once the ingredient mapping is complete AND every ingredient's cost is

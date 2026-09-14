@@ -4,8 +4,7 @@ import "database/sql"
 
 // CookEventIngredient is one pantry lot actually decremented for one
 // ingredient at one cook. One row per lot, not per ingredient, since FIFO
-// consumption of a single ingredient can span multiple lots. See
-// docs/requirements-ingredient-costing.md §6.
+// consumption of a single ingredient can span multiple lots.
 type CookEventIngredient struct {
 	ID            int64
 	CookEventID   int64

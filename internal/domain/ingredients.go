@@ -28,8 +28,7 @@ func FlattenIngredientLines(groups []store.IngredientGroup) []IngredientLine {
 }
 
 // MappingStatus summarizes how complete a recipe's ingredient mapping is,
-// per the three-state model in docs/requirements-ingredient-costing.md §4:
-// unmapped (no rows at all), partial (some lines accounted for), or complete
+// in one of three states: unmapped (no rows at all), partial (some lines accounted for), or complete
 // (every line mapped or explicitly not_tracked).
 type MappingStatus struct {
 	State         string // "unmapped", "partial", "complete"

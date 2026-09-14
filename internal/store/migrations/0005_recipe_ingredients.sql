@@ -1,8 +1,7 @@
--- Recipe-to-pantry-item ingredient mapping. See
--- docs/requirements-ingredient-costing.md for the full design.
+-- Recipe-to-pantry-item ingredient mapping.
 
 -- One row per raw ingredient line on a recipe, not per pantry item, so
--- completeness (unmapped / partial / complete, doc §4) can be derived by
+-- completeness (unmapped / partial / complete) can be derived by
 -- comparing row count against the recipe's actual ingredient line count.
 CREATE TABLE recipe_ingredients (
   id INTEGER PRIMARY KEY,

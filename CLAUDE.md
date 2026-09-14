@@ -19,8 +19,8 @@ go build -o bin/meal ./cmd/mealcli   # from this repo
 Data lives outside this repo, in `~/MealPlanning/` (SQLite DB + synced recipe cache), resolved via
 `MEALCLI_DATA_ROOT` env var → `~/.config/mealcli/config.toml` → default. The USDA API key lives in
 `~/.config/mealcli/secrets.env`, never in a tracked file - if you ever see a real API key in a
-markdown file or committed doc, treat that as a bug and fix it immediately (this happened once
-before, see `archive/README.md`).
+markdown file or committed doc, treat that as a bug and fix it immediately (this has happened
+before).
 
 Run `meal doctor` if anything seems off - it checks the DB, data root, USDA key presence (without
 printing it), and recipe sync freshness.
